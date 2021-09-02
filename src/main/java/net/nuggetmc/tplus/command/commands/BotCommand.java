@@ -174,11 +174,6 @@ public class BotCommand extends CommandInstance {
         return args.length == 2 ? new ArrayList<>(armorTiers.keySet()) : null;
     }
 
-
-@@ -230,6 +230,29 @@ public void armor(CommandSender sender, List<String> args) {
-        return args.length == 2 ? new ArrayList<>(armorTiers.keySet()) : null;
-    }
-
     @Command(
         name = "range",
         desc = "Change the attack range for all bots."
