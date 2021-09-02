@@ -174,6 +174,20 @@ public class BotCommand extends CommandInstance {
         return args.length == 2 ? new ArrayList<>(armorTiers.keySet()) : null;
     }
 
+
+@@ -230,6 +230,29 @@ public void armor(CommandSender sender, List<String> args) {
+        return args.length == 2 ? new ArrayList<>(armorTiers.keySet()) : null;
+    }
+
+    @Command(
+        name = "range",
+        desc = "Change the attack range for all bots."
+    )
+    public void range(CommandSender sender, @Arg("radius") int radius) {
+        manager.fetch().forEach(bot -> bot.setAttackRange(radius));
+        sender.sendMessage("Successfully set the attack range to " + ChatColor.YELLOW + radius + ChatColor.RESET + " for all bots.");
+    }
+
     @Command(
         name = "info",
         desc = "Information about loaded bots.",
@@ -213,12 +227,14 @@ public class BotCommand extends CommandInstance {
                 String strLoc = ChatColor.YELLOW + formatter.format(loc.getBlockX()) + ", " + formatter.format(loc.getBlockY()) + ", " + formatter.format(loc.getBlockZ());
                 Vector vel = bot.getVelocity();
                 String strVel = ChatColor.AQUA + formatter.format(vel.getX()) + ", " + formatter.format(vel.getY()) + ", " + formatter.format(vel.getZ());
+                int attackRange = bot.getAttackRange();
 
                 sender.sendMessage(ChatUtils.LINE);
                 sender.sendMessage(ChatColor.GREEN + botName);
                 sender.sendMessage(ChatUtils.BULLET_FORMATTED + "World: " + world);
                 sender.sendMessage(ChatUtils.BULLET_FORMATTED + "Position: " + strLoc);
                 sender.sendMessage(ChatUtils.BULLET_FORMATTED + "Velocity: " + strVel);
+                sender.sendMessage(ChatUtils.BULLET_FORMATTED + "Attack Range: " + attackRange);
                 sender.sendMessage(ChatUtils.LINE);
             }
 

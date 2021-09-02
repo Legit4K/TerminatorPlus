@@ -66,6 +66,7 @@ public class Bot extends EntityPlayer {
 
     private boolean removeOnDeath;
 
+    public int attackRange;
     private int aliveTicks;
     private int kills;
 
@@ -85,6 +86,7 @@ public class Bot extends EntityPlayer {
         this.defaultItem = new ItemStack(Material.AIR);
         this.velocity = new Vector(0, 0, 0);
         this.oldVelocity = velocity.clone();
+        this.attackRange = 3;
         this.noFallTicks = 60;
         this.fireTicks = 0;
         this.removeOnDeath = true;
@@ -179,6 +181,14 @@ public class Bot extends EntityPlayer {
 
     public void setDefaultItem(ItemStack item) {
         this.defaultItem = item;
+    }
+
+    public void setAttackRange(int radius) {
+        this.attackRange = radius;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
     }
 
     public Vector getOffset() {
@@ -430,9 +440,11 @@ public class Bot extends EntityPlayer {
     }
 
     public void attack(org.bukkit.entity.Entity entity) {
+        Location loc = this.getLocation();
         faceLocation(entity.getLocation());
         punch();
 
+        if (loc.distance(entity.getLocation()) >= this.getAttackRange()) return;
         double damage = ItemUtils.getLegacyAttackDamage(defaultItem);
 
         if (entity instanceof Damageable) {

@@ -87,7 +87,7 @@ public class BotAgent extends Agent {
             move(bot, player, loc, target);
         }*/
 
-        if (bot.tickDelay(3)) attack(bot, player, loc);
+        if (bot.tickDelay(5)) attack(bot, player, loc);
     }
 
     private void attack(Bot bot, Player player, Location loc) {
