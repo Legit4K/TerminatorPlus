@@ -175,6 +175,25 @@ public class BotCommand extends CommandInstance {
     }
 
     @Command(
+        name = "place",
+        desc = "Sets the placement block for all bots."
+    )
+    public void place(CommandSender sender, @Arg("block") String blockName) {
+        Material type = Material.matchMaterial(blockName);
+
+        if (type == null) {
+            sender.sendMessage("The Material " + ChatColor.YELLOW + blockName + ChatColor.RESET + " is not valid!");
+            return;
+        }
+
+        ItemStack block = new ItemStack(type);
+
+        manager.fetch().forEach(bot -> bot.setPlacementBlock(block));
+
+        sender.sendMessage("Successfully set the placement block to " + ChatColor.YELLOW + block.getType() + ChatColor.RESET + " for all current bots.");
+    }
+
+    @Command(
         name = "range",
         desc = "Change the attack range for all bots."
     )
