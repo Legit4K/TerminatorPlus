@@ -121,8 +121,10 @@ public class Bot extends EntityPlayer {
 
         bot.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         bot.getBukkitEntity().setNoDamageTicks(10);
-        Bukkit.getOnlinePlayers().forEach(p -> ((CraftPlayer) p).getHandle().playerConnection.sendPacket(
-        		new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, bot)));
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(
+        		new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, bot));
+        });
 
         nmsWorld.addEntity(bot);
         bot.renderAll();
