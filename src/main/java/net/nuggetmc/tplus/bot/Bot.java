@@ -56,6 +56,7 @@ public class Bot extends EntityPlayer {
     }
 
     public ItemStack defaultItem;
+    public ItemStack placementBlock;
 
     private boolean shield;
     private boolean blocking;
@@ -84,6 +85,7 @@ public class Bot extends EntityPlayer {
         this.scheduler = Bukkit.getScheduler();
         this.agent = plugin.getManager().getAgent();
         this.defaultItem = new ItemStack(Material.AIR);
+        this.placementBlock = new ItemStack(Material.COBBLESTONE);
         this.velocity = new Vector(0, 0, 0);
         this.oldVelocity = velocity.clone();
         this.attackRange = 3;
@@ -181,6 +183,14 @@ public class Bot extends EntityPlayer {
 
     public void setDefaultItem(ItemStack item) {
         this.defaultItem = item;
+    }
+
+    public void setPlacementBlock(ItemStack block) {
+        this.placementBlock = block;
+    }
+
+    public ItemStack getPlacementBlock() {
+        return placementBlock;
     }
 
     public void setAttackRange(int radius) {
@@ -682,7 +692,7 @@ public class Bot extends EntityPlayer {
             faceLocation(loc);
         }
 
-        setItem(new org.bukkit.inventory.ItemStack(Material.COBBLESTONE));
+        setItem(new org.bukkit.inventory.ItemStack(placementBlock));
         punch();
 
         Block block = loc.getBlock();
