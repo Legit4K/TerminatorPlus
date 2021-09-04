@@ -59,7 +59,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "create",
-        desc = "Create a bot."
+        desc = "Create and spawn a bot."
     )
     public void create(Player sender, @Arg("name") String name, @OptArg("skin") String skin) {
         manager.createBots(sender, name, skin, 1);
@@ -67,7 +67,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "createAt",
-        desc = "Create a bot at specific location."
+        desc = "Create and spawn a bot at specific location."
     )
     public void createAt(Player sender, @Arg("name") String name, @Arg("x") double x, @Arg("y") double y, @Arg("z") double z) {
         manager.createBotsAt(sender, name, x, y, z);
@@ -75,7 +75,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "multi",
-        desc = "Create multiple bots at once."
+        desc = "Create and spawn multiple bots at once."
     )
     public void multi(Player sender, @Arg("amount") int amount, @Arg("name") String name, @OptArg("skin") String skin) {
         manager.createBots(sender, name, skin, amount);
@@ -83,7 +83,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "give",
-        desc = "Gives a specified item to the bots."
+        desc = "Give a specified item to the bots."
     )
     public void give(CommandSender sender, @Arg("item-name") String itemName, @OptArg("bot-name") String botName) {
         Material type = Material.matchMaterial(itemName);
@@ -98,6 +98,7 @@ public class BotCommand extends CommandInstance {
         if (botName != null) {
             Bot bot = manager.getFirst(botName);
             bot.setDefaultItem(item);
+            sender.sendMessage("Successfully gave a " + ChatColor.YELLOW + itemName + ChatColor.RESET + " to " + ChatColor.GREEN + bot.getName());
             return;
         }
 
@@ -153,7 +154,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "armor",
-        desc = "Gives the bots an armor set.",
+        desc = "Give the bots an armor set.",
         autofill = "armorAutofill"
     )
     @SuppressWarnings("deprecation")
@@ -203,7 +204,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "place",
-        desc = "Sets the placement block for the bots."
+        desc = "Set the placement block for the bots."
     )
     public void place(CommandSender sender, @Arg("block") String blockName, @OptArg("bot-name") String botName) {
         Material type = Material.matchMaterial(blockName);
@@ -227,7 +228,7 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "range",
-        desc = "Change the attack range for all bots."
+        desc = "Change the attack range for the bots."
     )
     public void range(CommandSender sender, @Arg("radius") int radius, @OptArg("bot-name") String botName) {
         
