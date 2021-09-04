@@ -66,6 +66,14 @@ public class BotCommand extends CommandInstance {
     }
 
     @Command(
+        name = "createAt",
+        desc = "Create a bot at specific location."
+    )
+    public void createAt(Player sender, @Arg("name") String name, @Arg("x") double x, @Arg("y") double y, @Arg("z") double z) {
+        manager.createBotsAt(sender, name, x, y, z);
+    }
+
+    @Command(
         name = "multi",
         desc = "Create multiple bots at once."
     )
@@ -75,9 +83,9 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "give",
-        desc = "Gives a specified item to all bots."
+        desc = "Gives a specified item to the bots."
     )
-    public void give(CommandSender sender, @Arg("item-name") String itemName) {
+    public void give(CommandSender sender, @Arg("item-name") String itemName, @OptArg("bot-name") String botName) {
         Material type = Material.matchMaterial(itemName);
 
         if (type == null) {
@@ -87,8 +95,13 @@ public class BotCommand extends CommandInstance {
 
         ItemStack item = new ItemStack(type);
 
-        manager.fetch().forEach(bot -> bot.setDefaultItem(item));
+        if (botName != null) {
+            Bot bot = manager.getFirst(botName);
+            Bot.setDefaultItem(item);
+            return;
+        }
 
+        manager.fetch().forEach(bot -> bot.setDefaultItem(item));
         sender.sendMessage("Successfully set the default item to " + ChatColor.YELLOW + item.getType() + ChatColor.RESET + " for all current bots.");
     }
 
@@ -140,11 +153,11 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "armor",
-        desc = "Gives all bots an armor set.",
+        desc = "Gives the bots an armor set.",
         autofill = "armorAutofill"
     )
     @SuppressWarnings("deprecation")
-    public void armor(CommandSender sender, @Arg("armor-tier") String armorTier) {
+    public void armor(CommandSender sender, @Arg("armor-tier") String armorTier, @OptArg("bot-name") String botName) {
         String tier = armorTier.toLowerCase();
 
         if (!armorTiers.containsKey(tier)) {
@@ -155,11 +168,25 @@ public class BotCommand extends CommandInstance {
 
         ItemStack[] armor = armorTiers.get(tier);
 
+        if (botName != null) {
+            Bot bot = manager.getFirst(botName);
+            bot.getBukkitEntity().getInventory().setArmorContents(armor);
+            bot.getBukkitEntity().updateInventory();
+
+            // packet sending to ensure it applies
+            bot.setItem(armor[0], EnumItemSlot.FEET);
+            bot.setItem(armor[1], EnumItemSlot.LEGS);
+            bot.setItem(armor[2], EnumItemSlot.CHEST);
+            bot.setItem(armor[3], EnumItemSlot.HEAD);
+            sender.sendMessage("Successfully set the armor tier to " + ChatColor.YELLOW + tier + ChatColor.RESET + " for " + ChatColor.GREEN + bot.getName());
+            return;
+        }
+
         manager.fetch().forEach(bot -> {
             bot.getBukkitEntity().getInventory().setArmorContents(armor);
             bot.getBukkitEntity().updateInventory();
 
-            // packet sending to ensure
+            // packet sending to ensure it applies
             bot.setItem(armor[0], EnumItemSlot.FEET);
             bot.setItem(armor[1], EnumItemSlot.LEGS);
             bot.setItem(armor[2], EnumItemSlot.CHEST);
@@ -176,9 +203,9 @@ public class BotCommand extends CommandInstance {
 
     @Command(
         name = "place",
-        desc = "Sets the placement block for all bots."
+        desc = "Sets the placement block for the bots."
     )
-    public void place(CommandSender sender, @Arg("block") String blockName) {
+    public void place(CommandSender sender, @Arg("block") String blockName, @OptArg("bot-name") String botName) {
         Material type = Material.matchMaterial(blockName);
 
         if (type == null) {
@@ -188,8 +215,13 @@ public class BotCommand extends CommandInstance {
 
         ItemStack block = new ItemStack(type);
 
-        manager.fetch().forEach(bot -> bot.setPlacementBlock(block));
+        if (botName != null) {
+            Bot bot = manager.getFirst(botName);
+            bot.setPlacementBlock(block);
+            sender.sendMessage("Successfully set placement block to " + ChatColor.YELLOW + block.getType() + ChatColor.RESET + " for " + ChatColor.GREEN + bot.getName());
+        }
 
+        manager.fetch().forEach(bot -> bot.setPlacementBlock(block));
         sender.sendMessage("Successfully set the placement block to " + ChatColor.YELLOW + block.getType() + ChatColor.RESET + " for all current bots.");
     }
 
@@ -197,7 +229,14 @@ public class BotCommand extends CommandInstance {
         name = "range",
         desc = "Change the attack range for all bots."
     )
-    public void range(CommandSender sender, @Arg("radius") int radius) {
+    public void range(CommandSender sender, @Arg("radius") int radius, @OptArg("bot-name") String botName) {
+        
+        if (botName != null) {
+            Bot bot = manager.getFirst(botName);
+            bot.setAttackRange(radius);
+            sender.sendMessage("Successfully set the attack range to " + ChatColor.YELLOW + radius + ChatColor.RESET + " for " + ChatColor.GREEN + bot.getName());
+        }
+        
         manager.fetch().forEach(bot -> bot.setAttackRange(radius));
         sender.sendMessage("Successfully set the attack range to " + ChatColor.YELLOW + radius + ChatColor.RESET + " for all bots.");
     }

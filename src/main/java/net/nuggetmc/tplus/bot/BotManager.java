@@ -69,6 +69,22 @@ public class BotManager implements Listener {
         createBots(sender, name, skinName, n, null);
     }
 
+    public void createBots(Player sender, String name, String skinName, int n) {
+        createBots(sender, name, skinName, n, null);
+    }
+    
+    public void createBotsAt(Player sender, String name, double x, double y, double z) {
+    
+        Location location = new Location(sender.getWorld(), x, y, z);
+    
+        sender.sendMessage("Creating a new bot with name " + ChatColor.GREEN
+            + name + ChatColor.RESET + " at "
+            + ChatColor.YELLOW + location.getX()
+            + ", " + location.getY() + ", " + location.getZ());
+    
+        createBots(location, name, MojangAPI.getSkin(name), 1, null);
+    }
+
     public void createBots(Player sender, String name, String skinName, int n, NeuralNetwork network) {
         long timestamp = System.currentTimeMillis();
 
