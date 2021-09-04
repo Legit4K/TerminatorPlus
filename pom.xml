@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.nuggetmc</groupId>
     <artifactId>TerminatorPlus</artifactId>
-    <version>3.2-ALPHA</version>
+    <version>3.3-ALPHA</version>
     <name>TerminatorPlus</name>
 
     <properties>
