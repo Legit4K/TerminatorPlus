@@ -68,10 +68,6 @@ public class BotManager implements Listener {
     public void createBots(Player sender, String name, String skinName, int n) {
         createBots(sender, name, skinName, n, null);
     }
-
-    public void createBots(Player sender, String name, String skinName, int n) {
-        createBots(sender, name, skinName, n, null);
-    }
     
     public void createBotsAt(Player sender, String name, double x, double y, double z) {
     

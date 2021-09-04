@@ -97,7 +97,7 @@ public class BotCommand extends CommandInstance {
 
         if (botName != null) {
             Bot bot = manager.getFirst(botName);
-            Bot.setDefaultItem(item);
+            bot.setDefaultItem(item);
             return;
         }
 
