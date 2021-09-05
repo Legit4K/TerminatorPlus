@@ -553,7 +553,7 @@ public class LegacyAgent extends Agent {
 
             if (LegacyMats.BREAK.contains(m0) && LegacyMats.BREAK.contains(m1) && LegacyMats.BREAK.contains(m2)) {
 
-                npc.setItem(new ItemStack(Material.COBBLESTONE));
+                npc.setItem(new ItemStack(npc.getPlacementBlock()));
 
                 Block place = playerNPC.getLocation().getBlock();
 
@@ -570,7 +570,7 @@ public class LegacyAgent extends Agent {
                 // maybe put this in lower if statement onGround()
                 scheduler.runTaskLater(plugin, () -> {
                     npc.sneak();
-                    npc.setItem(new ItemStack(Material.COBBLESTONE));
+                    npc.setItem(new ItemStack(npc.getPlacementBlock()));
                     npc.punch();
                     npc.look(BlockFace.DOWN);
 
@@ -959,7 +959,7 @@ public class LegacyAgent extends Agent {
 
         if (atType == Material.LAVA) {
             if (bot.getBukkitEntity().getWorld().getEnvironment() == World.Environment.NETHER) {
-                bot.attemptBlockPlace(loc, Material.COBBLESTONE, false);
+                bot.attemptBlockPlace(loc, bot.getPlacementBlock().getType(), false);
             } else {
                 placeWaterDown(bot, world, loc);
             }
@@ -970,7 +970,7 @@ public class LegacyAgent extends Agent {
 
         if (headType == Material.LAVA) {
             if (bot.getBukkitEntity().getWorld().getEnvironment() == World.Environment.NETHER) {
-                bot.attemptBlockPlace(head, Material.COBBLESTONE, false);
+                bot.attemptBlockPlace(head, bot.getPlacementBlock().getType(), false);
             } else {
                 placeWaterDown(bot, world, head);
             }
@@ -1003,7 +1003,7 @@ public class LegacyAgent extends Agent {
 
         if (under2Type == Material.MAGMA_BLOCK) {
             if (LegacyMats.SPAWN.contains(under2Type)) {
-                bot.attemptBlockPlace(under2, Material.COBBLESTONE, true);
+                bot.attemptBlockPlace(under2, bot.getPlacementBlock().getType(), true);
             }
         }
 
@@ -1021,7 +1021,7 @@ public class LegacyAgent extends Agent {
                         if (LegacyMats.WATER.contains(place.getType())) {
                             Location mlgLoc = place.getLocation();
 
-                            bot.attemptBlockPlace(place.getLocation(), Material.COBBLESTONE, true);
+                            bot.attemptBlockPlace(place.getLocation(), bot.getPlacementBlock().getType(), true);
                         }
                     }
                 }
