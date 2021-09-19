@@ -65,6 +65,7 @@ public class Bot extends EntityPlayer {
     private Vector velocity;
     private Vector oldVelocity;
 
+    public boolean respawn;
     private boolean removeOnDeath;
 
     public int attackRange;
@@ -91,6 +92,7 @@ public class Bot extends EntityPlayer {
         this.attackRange = 3;
         this.noFallTicks = 60;
         this.fireTicks = 0;
+        this.respawn = true;
         this.removeOnDeath = true;
         this.offset = MathUtils.circleOffset(3);
 
@@ -526,6 +528,14 @@ public class Bot extends EntityPlayer {
         sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, this));
     }
 
+    public void toggleRespawn() {
+        respawn = !respawn;
+    }
+
+    public boolean getRespawn() {
+        return respawn;
+    }
+
     public void setRemoveOnDeath(boolean enabled) {
         this.removeOnDeath = enabled;
     }
@@ -548,8 +558,14 @@ public class Bot extends EntityPlayer {
             plugin.getManager().remove(this);
 
             scheduler.runTaskLater(plugin, this::setDead, 30);
-
             this.removeTab();
+
+            if (respawn) {
+                Location loc = getBukkitEntity().getWorld().getSpawnLocation();
+                String name = getName();
+
+                createBot(loc, name, MojangAPI.getSkin(name));
+            }
         }
     }
 
