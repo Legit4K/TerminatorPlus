@@ -322,6 +322,29 @@ public class BotCommand extends CommandInstance {
         }
     }
 
+    @Command(
+        name = "respawn",
+        desc = "Toggle the respawning of bots."
+    )
+    public void respawn(CommandSender sender) {
+        manager.fetch().forEach(bot -> bot.toggleRespawn());
+        sender.sendMessage("Successfully toggled the respawning of bots.");
+    }
+
+
+    @Command(
+        name = "spectate",
+        desc = "Spectate a bot."
+    )
+    public void spectate(CommandSender sender, @Arg("bot-name") String botName) {
+        Player player = ((Player) sender);
+        Bot bot = manager.getFirst(botName);
+
+        player.setGameMode(GameMode.SPECTATOR);
+        player.teleport(bot.getLocation());
+        sender.sendMessage("You are now spectating " + ChatColor.GREEN + bot.getName() + ChatColor.RESET);
+    }
+
     /*
      * EVENTUALLY, we should make a command parent hierarchy system soon too! (so we don't have to do this crap)
      * basically, in the @Command annotation, you can include a "parent" for the command, so it will be a subcommand under the specified parent
