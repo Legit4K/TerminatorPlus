@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -190,5 +191,18 @@ public class BotManager implements Listener {
         if (bot != null) {
             agent.onBotDeath(new BotDeathEvent(event, bot));
         }
+    }
+
+    @EventHandler
+    public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        Location playerPos = player.getLocation();
+
+        bots.forEach(bot -> {
+            String name = bot.getName();
+            bot.createBot(playerPos, name, MojangAPI.getSkin(name));
+        });
+
+        player.sendMessage("The bots have followed you into the portal.");
     }
 }

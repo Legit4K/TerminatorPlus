@@ -557,7 +557,7 @@ public class Bot extends EntityPlayer {
             // this should fix the concurrentmodificationexception mentioned above, I used the ConcurrentHashMap.newKeySet to make a "ConcurrentHashSet"
             plugin.getManager().remove(this);
 
-            scheduler.runTaskLater(plugin, this::setDead, 30);
+            scheduler.runTaskLater(plugin, this::setDead, 3);
             this.removeTab();
 
             if (respawn) {
