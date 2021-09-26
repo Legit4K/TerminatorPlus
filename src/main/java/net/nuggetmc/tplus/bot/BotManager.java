@@ -1,6 +1,7 @@
 package net.nuggetmc.tplus.bot;
 
 import net.minecraft.server.v1_16_R3.PlayerConnection;
+import net.nuggetmc.tplus.TerminatorPlus;
 import net.nuggetmc.tplus.bot.agent.Agent;
 import net.nuggetmc.tplus.bot.agent.legacyagent.LegacyAgent;
 import net.nuggetmc.tplus.bot.agent.legacyagent.ai.NeuralNetwork;
@@ -27,6 +28,7 @@ public class BotManager implements Listener {
     private final Agent agent;
     private final Set<Bot> bots;
     private final NumberFormat numberFormat;
+    private final TerminatorPlus plugin;
 
     public boolean joinMessages = false;
 
@@ -34,6 +36,7 @@ public class BotManager implements Listener {
         this.agent = new LegacyAgent(this);
         this.bots = ConcurrentHashMap.newKeySet(); //should fix concurrentmodificationexception
         this.numberFormat = NumberFormat.getInstance(Locale.US);
+        this.plugin = TerminatorPlus.getInstance();
     }
 
     public Set<Bot> fetch() {
@@ -195,14 +198,20 @@ public class BotManager implements Listener {
 
     @EventHandler
     public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
-        Player player = event.getPlayer();
-        Location playerPos = player.getLocation();
 
-        bots.forEach(bot -> {
-            String name = bot.getName();
-            bot.createBot(playerPos, name, MojangAPI.getSkin(name));
-        });
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                Player player = event.getPlayer();
+                Location playerPos = player.getLocation();
 
-        player.sendMessage("The bots have followed you into the portal.");
+                bots.forEach(bot -> {
+                    String name = bot.getName();
+                    reset();
+                    bot.createBot(playerPos, name, MojangAPI.getSkin(name));
+                });
+
+                player.sendMessage("The bots have followed you into the portal.");
+            }
+        }, 200L);
     }
 }
