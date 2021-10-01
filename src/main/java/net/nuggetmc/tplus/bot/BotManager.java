@@ -198,12 +198,11 @@ public class BotManager implements Listener {
 
     @EventHandler
     public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        Location playerPos = player.getLocation();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
-                Player player = event.getPlayer();
-                Location playerPos = player.getLocation();
-
                 bots.forEach(bot -> {
                     String name = bot.getName();
                     reset();

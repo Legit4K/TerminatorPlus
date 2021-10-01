@@ -346,6 +346,18 @@ public class BotCommand extends CommandInstance {
         sender.sendMessage("You are now spectating " + ChatColor.GREEN + bot.getName() + ChatColor.RESET);
     }
 
+    @Command(
+        name = "tp",
+        desc = "Teleport to a bot."
+    )
+    public void teleport(CommandSender sender, @Arg("bot-name") String botName) {
+        Player player = ((Player) sender);
+        Bot bot = manager.getFirst(botName);
+
+        player.teleport(bot.getLocation());
+        sender.sendMessage("Teleported to " + ChatColor.GREEN + bot.getName() + ChatColor.RESET);
+    }
+
     /*
      * EVENTUALLY, we should make a command parent hierarchy system soon too! (so we don't have to do this crap)
      * basically, in the @Command annotation, you can include a "parent" for the command, so it will be a subcommand under the specified parent
